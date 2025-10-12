@@ -4,7 +4,7 @@ int main(){
 
     EngineWindow window;
 
-    window.InitWindow();
+    window.Run();
 
     return 0;
 }

@@ -6,5 +6,5 @@ class EngineWindow{
     public:
         int width;
         int height;
-        int InitWindow(const char* title = "VE", int width = 500, int height = 500, bool resizeble = false);
+        int Run(const char* title = "VE", int width = 500, int height = 500, bool resizeble = true);
 };

@@ -3,16 +3,12 @@
 #include "window.hpp"
 #include <iostream>
 
-int EngineWindow::InitWindow(const char* title, int width, int height, bool resizeble){
+int EngineWindow::Run(const char* title, int width, int height, bool resizeble){
 
     if (!glfwInit()){ std::cout << "Error init GLFW" << std::endl; }
 
-    if (resizeble == true) {
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-    }
-    else {
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    }
+    if (resizeble == true) { glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); }
+    else { glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); }
 
     GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
@@ -30,7 +26,7 @@ int EngineWindow::InitWindow(const char* title, int width, int height, bool resi
     glMatrixMode(GL_MODELVIEW);
 
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
 
