@@ -1,0 +1,9 @@
+[package]
+name = "VE"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+gl = "0.14.0"
+glfw = "0.60.0"
+
