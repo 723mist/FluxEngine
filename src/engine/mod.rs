@@ -2,12 +2,15 @@ extern crate gl;
 extern crate glfw;
 extern crate gl_loader;
 extern crate image;
+extern crate glm;
 
 use gl::types::*;
-use glfw::{Context};
+use glfw::{Context, Key, Action}; //Window
 use std::mem::size_of_val;
 use std::ffi::CString;
-use std::path::Path;
+use std::path::{Path}; //PathBuf
+//use glm::{vec4, vec3, Mat4};
+//use glu_sys::*;
 
 #[allow(unused_imports)]
 use image::GenericImageView;
@@ -28,7 +31,6 @@ const VERTEX_SHADER_SOURCE: &str = r#"
         TexCoord = aTexCoord;
     }
 "#;
-
 const FRAGMENT_SHADER_SOURCE: &str = r#"
     #version 330 core
     out vec4 FragColor;
@@ -44,13 +46,14 @@ const FRAGMENT_SHADER_SOURCE: &str = r#"
     }
 "#;
 
-
 pub fn window(title: &str, width: u32, height: u32) {
 
     use glfw::fail_on_errors;
     let mut glfw = glfw::init(fail_on_errors!()).unwrap();
 
     let (mut window, _events) = glfw.create_window(width, height, title, glfw::WindowMode::Windowed).expect("Failed to create GLFW window");
+
+    let debug_mode: bool = true;
 
     window.make_current();
     window.set_key_polling(true);
@@ -60,9 +63,9 @@ pub fn window(title: &str, width: u32, height: u32) {
     gl::load_with(|symbol| gl_loader::get_proc_address(symbol) as *const _);
 
     let vertices: Vec<f32> = vec![
-        0.5,  0.5, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0,   // top right
-        0.5, -0.5, 0.0,   0.0, 1.0, 0.0,   1.0, 1.0,   // bottom right
-        -0.5, -0.5, 0.0,   0.0, 0.0, 1.0,   0.0, 1.0,   // bottom left
+        0.5,  0.5, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0,
+        0.5, -0.5, 0.0,   0.0, 1.0, 0.0,   1.0, 1.0,
+        -0.5, -0.5, 0.0,   0.0, 0.0, 1.0,   0.0, 1.0,
         -0.5,  0.5, 0.0,   1.0, 1.0, 0.0,   0.0, 0.0
     ];
 
@@ -83,6 +86,7 @@ pub fn window(title: &str, width: u32, height: u32) {
         1, 2, 3
     };
 
+    //Shaders
     let vertex_shader: u32;
     let fragment_shader: u32;
     let shader_program: u32;
@@ -90,10 +94,11 @@ pub fn window(title: &str, width: u32, height: u32) {
     let mut texture: u32 = 0;
 
     //Texture path
-    let texture_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("r/w.jpg");
+    //let _texture_path = Path::new(env!("CARGO_MANIFEST_DIR")).join(Self::texture_load);
+    let _texture_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("content/defult.jpg");
 
     //Image + error
-    let img = image::open(texture_path).unwrap_or_else(|e| panic!("Failed to load texture: {}", e));
+    let img = image::open(_texture_path).unwrap_or_else(|e| panic!("Failed to load texture. Error: {}", e));
 
     //Image type RGBA
     let img_rgba = img.to_rgba8();
@@ -135,7 +140,7 @@ pub fn window(title: &str, width: u32, height: u32) {
         gl::UseProgram(shader_program);
     }
 
-    //SHADER(VAO)
+        //SHADER(VAO)
     unsafe {
         //Gen vertex arrays
         gl::GenVertexArrays(1, &mut vao);
@@ -213,6 +218,28 @@ pub fn window(title: &str, width: u32, height: u32) {
             //gl::DrawArrays(gl::TRIANGLES, 0, 6); //Old
         }
         glfw.poll_events();
+        for (_, event) in glfw::flush_messages(&_events) {
+            if debug_mode == true {
+                match event {
+                    glfw::WindowEvent::Key(Key::Escape, _, Action::Press, _) => {
+                        unsafe {
+                            static mut WIRFRAME_MODE: bool = false;
+                            WIRFRAME_MODE = !WIRFRAME_MODE;
+
+                            if WIRFRAME_MODE {
+                                gl::PolygonMode(gl::FRONT_AND_BACK, gl::LINE);
+                                println!("Debug mode(WIRFRAME_MODE)");
+                            } else {
+                                gl::PolygonMode(gl::FRONT_AND_BACK, gl::FILL);
+                                println!("Normal mode");
+                            }
+                        }
+                    },
+                    _ => {},
+                }
+            }
+        }
     }
     gl_loader::end_gl();
 }
+
