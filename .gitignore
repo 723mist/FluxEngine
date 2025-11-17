@@ -1,3 +1,8 @@
 
 .qtcreator/CMakeLists.txt.user
 /build/Desktop-Debug
+build/VE
+build/Makefile
+/build/CMakeFiles
+build/cmake_install.cmake
+build/CMakeCache.txt

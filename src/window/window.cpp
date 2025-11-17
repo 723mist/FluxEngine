@@ -1,6 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <GL/glew.h>
 #include "../libs/stb/stb_image.h"
+#include "../texture/texture.hpp"
 #include "window.hpp"
 
 const char* VERTEX_SHADER_SOURCE = R"(
@@ -21,7 +22,7 @@ const char* VERTEX_SHADER_SOURCE = R"(
 )";
 
 const char* FRAGMENT_SHADER_SOURCE = R"(
-    #version 330 core
+    #version 330 coreмодифицированный
     in vec3 ourColor;
     in vec2 TexCoord;
 
@@ -36,22 +37,6 @@ const char* FRAGMENT_SHADER_SOURCE = R"(
 )";
 
 float color_r_f, color_g_f, color_b_f = 0.0;
-
-void Engine::BackgroundColor(double red, double green, double blue) {
-    bool set_c_color = true;
-
-    if (!(red < 1.0 || red > 0.0)) { set_c_color = false; }
-    if (!(green < 1.0 || green > 0.0)) { set_c_color = false; }
-    if (!(blue < 1.0 || blue > 0.0)) { set_c_color = false; }
-
-    if (set_c_color == true) {
-        color_r_f = red;
-        color_g_f = green;
-        color_b_f = blue;
-    } else {
-        std::cout << "The data for the function(backgroundColor) is incorrect." << std::endl;
-    }
-}
 
 int Engine::Window(const char* title, int width, int height) {
     glfwInit();
@@ -144,28 +129,9 @@ int Engine::Window(const char* title, int width, int height) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    stbi_set_flip_vertically_on_load(true);
-
-    int texWidth, texHeight, nrChannels;
-    unsigned char* data = stbi_load("content/defult.jpg", &texWidth, &texHeight, &nrChannels, 0);
-    if (data) {
-        GLenum format = (nrChannels == 4 ? GL_RGBA : GL_RGB);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, format, texWidth, texHeight, 0, format, GL_UNSIGNED_BYTE, data);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-
-    stbi_image_free(data);
-
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    while(!glfwWindowShouldClose(window))
-    {
+    while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
         glClearColor(color_r_f, color_g_f, color_b_f, 1.0f);

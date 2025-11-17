@@ -15,11 +15,13 @@ find_package(Freetype REQUIRED)
 file(GLOB_RECURSE SOURCES
         src/*.cpp
         src/window/*.cpp
+        src/texture/*.cpp
 )
 
 file(GLOB_RECURSE HEADERS
         src/*.hpp
         src/window/*.hpp
+        src/texture/*.hpp
 )
 
 add_executable(VE
