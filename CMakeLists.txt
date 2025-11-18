@@ -20,6 +20,7 @@ file(GLOB_RECURSE SOURCES
 
 file(GLOB_RECURSE HEADERS
         src/*.hpp
+        src/*.h
         src/window/*.hpp
         src/texture/*.hpp
 )

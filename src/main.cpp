@@ -1,8 +1,16 @@
-#include "window/window.hpp"
+#include "engine.h"
 
 int main() {
     Engine engine;
-    engine.BackgroundColor(0.2, 0.3, 0.3);
-    engine.Window("VE", 500, 500);
+
+    engine.Init("VE", 500, 500);
+
+    TextureManager tm;
+
+    tm.LoadTexture();
+
+    engine.Run();
+    engine.Destroy();
+
     return 0;
 }

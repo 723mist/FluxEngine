@@ -3,13 +3,16 @@
 #include "../libs/stb/stb_image.h"
 #include <iostream>
 
-unsigned int TextureManager::LoadTexture(const std::string& filePath) {
+bool TextureManager::LoadTexture(const std::string &filePath) {
     unsigned int textureID;
     glGenTextures(1, &textureID);
 
     int texWidth, texHeight, nrChannels;
+
     stbi_set_flip_vertically_on_load(true);
+
     unsigned char* data = stbi_load(filePath.c_str(), &texWidth, &texHeight, &nrChannels, 0);
+
     if (data) {
         GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
 
@@ -21,8 +24,6 @@ unsigned int TextureManager::LoadTexture(const std::string& filePath) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        std::cout << "Texture loaded: " << filePath << std::endl;
     } else {
         std::cout << "Failed to load texture: " << filePath << std::endl;
     }
@@ -33,8 +34,4 @@ unsigned int TextureManager::LoadTexture(const std::string& filePath) {
 
 void TextureManager::BindTexture(unsigned int textureID) {
     glBindTexture(GL_TEXTURE_2D, textureID);
-}
-
-void TextureManager::DeleteTexture(unsigned int textureID) {
-    glDeleteTextures(1, &textureID);
 }

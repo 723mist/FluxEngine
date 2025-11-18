@@ -1,6 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <GL/glew.h>
-#include "../libs/stb/stb_image.h"
+//#include "../libs/stb/stb_image.h"
 #include "../texture/texture.hpp"
 #include "window.hpp"
 
@@ -22,7 +22,7 @@ const char* VERTEX_SHADER_SOURCE = R"(
 )";
 
 const char* FRAGMENT_SHADER_SOURCE = R"(
-    #version 330 coreмодифицированный
+    #version 330 core
     in vec3 ourColor;
     in vec2 TexCoord;
 
@@ -38,18 +38,22 @@ const char* FRAGMENT_SHADER_SOURCE = R"(
 
 float color_r_f, color_g_f, color_b_f = 0.0;
 
-int Engine::Window(const char* title, int width, int height) {
+GLFWwindow* window;
+unsigned int VBO, VAO, EBO, shaderProgram;
+
+bool Engine::Init(const char* title, int width, int height) {
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(width, height, title, NULL, NULL);
+    window = glfwCreateWindow(width, height, title, NULL, NULL);
 
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return -1;
+        return false;
     }
 
     glfwMakeContextCurrent(window);
@@ -57,23 +61,18 @@ int Engine::Window(const char* title, int width, int height) {
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
         std::cout << "Failed to initialize GLEW" << std::endl;
-        return -1;
+        return false;
     }
 
     //Vertices
     float vertices[] = {
     //       Position     |      Color
     //    X     Y     Z   |  R     G     B  | Textur_Pos
-        1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Right, up
-        1.0f,  -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, // Right, down
-        -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // Left, down
-        -1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Left, Up
+        0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Right, up
+        0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Right, down
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Left, down
+        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Left, Up  // Left, Up
     };
-
-    /*0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Right, up
-    0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Right, down
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Left, down
-    -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Left, Up*/
 
     unsigned int indices[] = {
         0, 1, 3,
@@ -90,7 +89,7 @@ int Engine::Window(const char* title, int width, int height) {
     glShaderSource(fragmentShader, 1, &FRAGMENT_SHADER_SOURCE, NULL);
     glCompileShader(fragmentShader);
 
-    unsigned int shaderProgram = glCreateProgram();
+    shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
@@ -99,7 +98,6 @@ int Engine::Window(const char* title, int width, int height) {
     glDeleteShader(fragmentShader);
 
     //VBO VAO EBO
-    unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -122,34 +120,42 @@ int Engine::Window(const char* title, int width, int height) {
     glEnableVertexAttribArray(2);
 
     // Texture
-    unsigned int texture;
+    /*unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);*/
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
+    //Edited
+
+    return true;
+}
+
+void Engine::Run() {
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        glClearColor(color_r_f, color_g_f, color_b_f, 1.0f);
+        //glClearColor(color_r_f, color_g_f, color_b_f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        //glBindTexture(GL_TEXTURE_2D, texture);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
     }
+}
 
+void Engine::Destroy() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
 
     glfwTerminate();
-    return 0;
 }

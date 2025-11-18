@@ -1,14 +1,16 @@
-#ifndef TEXTURE_MANAGER_H
-#define TEXTURE_MANAGER_H
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
+#define GLEW_STATIC
 #include <string>
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 class TextureManager {
 public:
-    static unsigned int LoadTexture(const std::string& filePath);
-    static void BindTexture(unsigned int textureID);
-    static void DeleteTexture(unsigned int textureID);
+    bool LoadTexture(const std::string &filePath = "content/defult.jpg");
+    void BindTexture(unsigned int textureID);
+    void GetTextureID();
 };
 
 #endif
