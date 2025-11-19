@@ -9,7 +9,7 @@
 class TextureManager {
 public:
     bool LoadTexture(const std::string &filePath = "content/defult.jpg");
-    void BindTexture(unsigned int textureID);
+    void BindTexture(unsigned int textureID = 1);
     void GetTextureID();
 };
 

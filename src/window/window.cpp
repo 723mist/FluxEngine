@@ -1,6 +1,4 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include <GL/glew.h>
-//#include "../libs/stb/stb_image.h"
 #include "../texture/texture.hpp"
 #include "window.hpp"
 
@@ -119,27 +117,23 @@ bool Engine::Init(const char* title, int width, int height) {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    // Texture
-    /*unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);*/
-
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    //Edited
-
     return true;
+}
+
+void Engine::BackgroundColor(double red, double green, double blue) {
+    if (!(red > 1.0 || red < 0.0)) { color_r_f = red; } else { std::cout << "The color is specified incorrectly" << std::endl; }
+    if (!(green > 1.0 || green < 0.0)) { color_g_f = green; } else { std::cout << "The color is specified incorrectly" << std::endl; }
+    if (!(blue > 1.0 || blue < 0.0)) { color_b_f = blue; } else { std::cout << "The color is specified incorrectly" << std::endl; }
 }
 
 void Engine::Run() {
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        //glClearColor(color_r_f, color_g_f, color_b_f, 1.0f);
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClearColor(color_r_f, color_g_f, color_b_f, 1.0f);
+        //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
