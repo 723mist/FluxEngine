@@ -8,7 +8,7 @@ int main() {
     TextureManager tm;
     tm.LoadTexture();
 
-    engine.BackgroundColor(1.0, 1.0, 1.0);
+    engine.BackgroundColor(0.2, 0.3, 0.3);
 
     engine.Run();
     engine.Destroy();

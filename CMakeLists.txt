@@ -11,6 +11,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(glm REQUIRED)
 
 file(GLOB_RECURSE SOURCES
         src/*.cpp
@@ -41,4 +42,5 @@ target_link_libraries(VE PRIVATE
         OpenGL::GL
         glfw
         GLEW::GLEW
+        glm::glm
 )

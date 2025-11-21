@@ -1,6 +1,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../texture/texture.hpp"
 #include "window.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 const char* VERTEX_SHADER_SOURCE = R"(
     #version 330 core
@@ -11,9 +14,11 @@ const char* VERTEX_SHADER_SOURCE = R"(
     out vec3 ourColor;
     out vec2 TexCoord;
 
+    uniform mat4 transform;
+
     void main()
     {
-        gl_Position = vec4(aPos, 1.0);
+        gl_Position = transform * vec4(aPos, 1.0);
         ourColor = aColor;
         TexCoord = aTexCoord;
     }
@@ -69,7 +74,7 @@ bool Engine::Init(const char* title, int width, int height) {
         0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Right, up
         0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Right, down
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Left, down
-        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Left, Up  // Left, Up
+        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Left, Up
     };
 
     unsigned int indices[] = {
@@ -135,6 +140,24 @@ void Engine::Run() {
         glClearColor(color_r_f, color_g_f, color_b_f, 1.0f);
         //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        //ПЕРЕПИСАТЬ ПИСАЛ ИИ
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+        unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+
+        // Отладочный вывод
+        if (transformLoc == -1) {
+            std::cout << "ERROR: Could not find uniform 'transform'" << std::endl;
+        } else {
+            std::cout << "Transform uniform location: " << transformLoc << std::endl;
+        }
+
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+        //КОНЕЦ
 
         glUseProgram(shaderProgram);
         //glBindTexture(GL_TEXTURE_2D, texture);
