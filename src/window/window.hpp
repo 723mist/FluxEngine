@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 
 class Engine {
+private:
+    int width, height;
 public:
     bool Init(const char* title = "VE", int width = 500, int height = 500);
     void Run();

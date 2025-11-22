@@ -42,7 +42,9 @@ const char* FRAGMENT_SHADER_SOURCE = R"(
 float color_r_f, color_g_f, color_b_f = 0.0;
 
 GLFWwindow* window;
-unsigned int VBO, VAO, EBO, shaderProgram;
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+unsigned int VBO, VAO, EBO, shaderProgram, g_width, g_height;
 
 bool Engine::Init(const char* title, int width, int height) {
 
@@ -50,6 +52,8 @@ bool Engine::Init(const char* title, int width, int height) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 
     window = glfwCreateWindow(width, height, title, NULL, NULL);
 
@@ -60,6 +64,10 @@ bool Engine::Init(const char* title, int width, int height) {
     }
 
     glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwShowWindow(window);
+
+    glfwSwapInterval(0);
 
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
@@ -122,7 +130,10 @@ bool Engine::Init(const char* title, int width, int height) {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    std::cout << glGetString(GL_VERSION) << std::endl;
+    g_width = width;
+    g_height = height;
+
+    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
     return true;
 }
@@ -133,34 +144,49 @@ void Engine::BackgroundColor(double red, double green, double blue) {
     if (!(blue > 1.0 || blue < 0.0)) { color_b_f = blue; } else { std::cout << "The color is specified incorrectly" << std::endl; }
 }
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+}
+
 void Engine::Run() {
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
         glClearColor(color_r_f, color_g_f, color_b_f, 1.0f);
-        //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //ПЕРЕПИСАТЬ ПИСАЛ ИИ
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+        int width, height;
+        glfwGetFramebufferSize(window, &width, &height);
 
-        unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+        float aspect = (float)width / (float)height;
 
-        // Отладочный вывод
-        if (transformLoc == -1) {
-            std::cout << "ERROR: Could not find uniform 'transform'" << std::endl;
+        float orthoLeft = -1.0f, orthoRight = 1.0f;
+        float orthoBottom = -1.0f, orthoTop = 1.0f;
+
+        if (aspect > 1.0f) {
+            orthoLeft *= aspect;
+            orthoRight *= aspect;
         } else {
-            std::cout << "Transform uniform location: " << transformLoc << std::endl;
+            orthoBottom /= aspect;
+            orthoTop /= aspect;
         }
 
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-        //КОНЕЦ
+        glm::mat4 projection = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, -1.0f, 1.0f);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+
+        glm::mat4 transform = projection * model;
+
+        //glViewport(0, 0, width, height);
 
         glUseProgram(shaderProgram);
-        //glBindTexture(GL_TEXTURE_2D, texture);
+        unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+        //glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -176,3 +202,4 @@ void Engine::Destroy() {
 
     glfwTerminate();
 }
+
