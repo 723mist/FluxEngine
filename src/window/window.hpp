@@ -15,4 +15,9 @@ public:
     void BackgroundColor(double red = 0.0f, double green = 0.0f, double blue = 0.0f);
 };
 
+class Debug {
+public:
+    void FPSCounter(double updateTime = 0.3);
+};
+
 #endif

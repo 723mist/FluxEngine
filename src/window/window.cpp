@@ -45,6 +45,15 @@ GLFWwindow* window;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 unsigned int VBO, VAO, EBO, shaderProgram, g_width, g_height;
+double g_updateTime;
+
+const char* g_title;
+
+//FPS
+bool FPS_Counter = false;
+static unsigned frameCount = 0;
+double lastTime = glfwGetTime();
+int frames = 0;
 
 bool Engine::Init(const char* title, int width, int height) {
 
@@ -67,7 +76,7 @@ bool Engine::Init(const char* title, int width, int height) {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwShowWindow(window);
 
-    glfwSwapInterval(0);
+    glfwSwapInterval(1); //VSync
 
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
@@ -130,8 +139,12 @@ bool Engine::Init(const char* title, int width, int height) {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    TextureManager tm;
+    tm.whiteTexture();
+
     g_width = width;
     g_height = height;
+    g_title = title;
 
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
@@ -148,12 +161,30 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+void Debug::FPSCounter(double updateTime) {
+    FPS_Counter = true;
+    g_updateTime = updateTime;
+}
+
 void Engine::Run() {
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
         glClearColor(color_r_f, color_g_f, color_b_f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        frames++;
+        double currentTime = glfwGetTime();
+        if (FPS_Counter) {
+            if (currentTime - lastTime >= g_updateTime) {
+                double fps = frames / (currentTime - lastTime);
+                std::string titleWithFPS = std::string(g_title) + " FPS: " + std::to_string((int)fps); // 60 fps != 60.000 std::to_string((int)fps)
+                glfwSetWindowTitle(window, titleWithFPS.c_str());
+                std::cout << "FPS: " << (int)fps << std::endl; // 60 fps != 60.000 (int)fps
+                frames = 0;
+                lastTime = currentTime;
+            }
+        }
 
         int width, height;
         glfwGetFramebufferSize(window, &width, &height);
@@ -179,8 +210,6 @@ void Engine::Run() {
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 
         glm::mat4 transform = projection * model;
-
-        //glViewport(0, 0, width, height);
 
         glUseProgram(shaderProgram);
         unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");

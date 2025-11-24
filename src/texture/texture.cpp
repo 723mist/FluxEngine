@@ -32,6 +32,21 @@ bool TextureManager::LoadTexture(const std::string &filePath) {
     return textureID;
 }
 
-void TextureManager::BindTexture(unsigned int textureID) {
+void TextureManager::BindTexture(unsigned int textureUnit) {
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, textureID);
+}
+
+void TextureManager::whiteTexture() {
+    unsigned int whiteTexture;
+    glGenTextures(1, &whiteTexture);
+    glBindTexture(GL_TEXTURE_2D, whiteTexture);
+
+    unsigned char whitePixel[] = { 255, 255, 255, 255 };
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whitePixel);
+
+    if(textureID)
+        glBindTexture(GL_TEXTURE_2D, textureID);
+    else
+        glBindTexture(GL_TEXTURE_2D, whiteTexture);
 }
