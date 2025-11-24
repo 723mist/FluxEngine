@@ -1,6 +1,5 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include "../texture/texture.hpp"
 #include "window.hpp"
+#include "../texture/texture.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -39,21 +38,7 @@ const char* FRAGMENT_SHADER_SOURCE = R"(
     }
 )";
 
-float color_r_f, color_g_f, color_b_f = 0.0;
-
-GLFWwindow* window;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
-unsigned int VBO, VAO, EBO, shaderProgram, g_width, g_height;
-double g_updateTime;
-
-const char* g_title;
-
-//FPS
-bool FPS_Counter = false;
-static unsigned frameCount = 0;
-double lastTime = glfwGetTime();
-int frames = 0;
 
 bool Engine::Init(const char* title, int width, int height) {
 
@@ -86,8 +71,8 @@ bool Engine::Init(const char* title, int width, int height) {
 
     //Vertices
     float vertices[] = {
-    //       Position     |      Color
-    //    X     Y     Z   |  R     G     B  | Textur_Pos
+        //       Position     |      Color
+        //    X     Y     Z   |  R     G     B  | Textur_Pos
         0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Right, up
         0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Right, down
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Left, down
@@ -142,8 +127,6 @@ bool Engine::Init(const char* title, int width, int height) {
     TextureManager tm;
     tm.whiteTexture();
 
-    g_width = width;
-    g_height = height;
     g_title = title;
 
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
@@ -161,11 +144,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void Debug::FPSCounter(double updateTime) {
-    FPS_Counter = true;
-    g_updateTime = updateTime;
-}
-
 void Engine::Run() {
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -175,15 +153,13 @@ void Engine::Run() {
 
         frames++;
         double currentTime = glfwGetTime();
-        if (FPS_Counter) {
-            if (currentTime - lastTime >= g_updateTime) {
-                double fps = frames / (currentTime - lastTime);
-                std::string titleWithFPS = std::string(g_title) + " FPS: " + std::to_string((int)fps); // 60 fps != 60.000 std::to_string((int)fps)
-                glfwSetWindowTitle(window, titleWithFPS.c_str());
-                std::cout << "FPS: " << (int)fps << std::endl; // 60 fps != 60.000 (int)fps
-                frames = 0;
-                lastTime = currentTime;
-            }
+        if (currentTime - lastTime >= 0.3) {
+            double fps = frames / (currentTime - lastTime);
+            std::string titleWithFPS = std::string(g_title) + " FPS: " + std::to_string((int)fps); // 60 fps != 60.000 std::to_string((int)fps)
+            glfwSetWindowTitle(window, titleWithFPS.c_str());
+            std::cout << "FPS: " << (int)fps << std::endl; // 60 fps != 60.000 (int)fps
+            frames = 0;
+            lastTime = currentTime;
         }
 
         int width, height;
@@ -231,4 +207,3 @@ void Engine::Destroy() {
 
     glfwTerminate();
 }
-
