@@ -10,7 +10,7 @@ class TextureManager {
 private:
     unsigned int textureID;
 public:
-    bool LoadTexture(const std::string &filePath = "content/defult.jpg");
+    bool LoadTexture(const std::string &filePath = "content/placeholder.jpg");
     void BindTexture(unsigned int textureUnit = 0);
     void GetTextureID();
     void whiteTexture();
