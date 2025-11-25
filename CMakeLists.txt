@@ -17,6 +17,7 @@ file(GLOB_RECURSE SOURCES
         src/*.cpp
         src/window/*.cpp
         src/texture/*.cpp
+        src/renderer/*.cpp
 )
 
 file(GLOB_RECURSE HEADERS
@@ -24,6 +25,7 @@ file(GLOB_RECURSE HEADERS
         src/*.h
         src/window/*.hpp
         src/texture/*.hpp
+        src/renderer/*.hpp
 )
 
 add_executable(VE
