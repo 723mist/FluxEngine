@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(VE)
+project(FluxEngine)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -26,21 +26,22 @@ file(GLOB_RECURSE HEADERS
         src/window/*.hpp
         src/texture/*.hpp
         src/renderer/*.hpp
+        src/renderer/*.h
 )
 
-add_executable(VE
+add_executable(FE
         src/main.cpp
         ${SOURCES}
         ${HEADERS}
 )
 
-target_include_directories(VE PRIVATE
+target_include_directories(FE PRIVATE
         src
         ${OPENGL_INCLUDE_DIR}
         ${GLEW_INCLUDE_DIRS}
 )
 
-target_link_libraries(VE PRIVATE
+target_link_libraries(FE PRIVATE
         OpenGL::GL
         glfw
         GLEW::GLEW

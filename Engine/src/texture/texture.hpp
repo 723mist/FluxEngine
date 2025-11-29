@@ -8,9 +8,9 @@
 
 class TextureManager {
 private:
-    unsigned int textureID;
+    unsigned int textureID = 0;
 public:
-    bool LoadTexture(const std::string &filePath = "content/placeholder.jpg");
+    unsigned int LoadTexture(const std::string &filePath = "content/placeholder.jpg");
     void BindTexture(unsigned int textureUnit = 0);
     void GetTextureID();
     void whiteTexture();

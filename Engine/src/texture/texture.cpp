@@ -3,7 +3,7 @@
 #include "../libs/stb/stb_image.h"
 #include <iostream>
 
-bool TextureManager::LoadTexture(const std::string &filePath) {
+unsigned int TextureManager::LoadTexture(const std::string &filePath) {
     unsigned int textureID;
     glGenTextures(1, &textureID);
 

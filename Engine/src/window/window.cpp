@@ -4,40 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-const char* VERTEX_SHADER_SOURCE = R"(
-    #version 330 core
-    layout (location = 0) in vec3 aPos;
-    layout (location = 1) in vec3 aColor;
-    layout (location = 2) in vec2 aTexCoord;
-
-    out vec3 ourColor;
-    out vec2 TexCoord;
-
-    uniform mat4 transform;
-
-    void main()
-    {
-        gl_Position = transform * vec4(aPos, 1.0);
-        ourColor = aColor;
-        TexCoord = aTexCoord;
-    }
-)";
-
-const char* FRAGMENT_SHADER_SOURCE = R"(
-    #version 330 core
-    in vec3 ourColor;
-    in vec2 TexCoord;
-
-    out vec4 FragColor;
-
-    uniform sampler2D ourTexture;
-
-    void main()
-    {
-        FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);
-    }
-)";
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 bool Engine::Init(const char* title, int width, int height) {
@@ -71,12 +37,12 @@ bool Engine::Init(const char* title, int width, int height) {
 
     //Vertices
     float vertices[] = {
-        //       Position     |      Color
-        //    X     Y     Z   |  R     G     B  | Textur_Pos
-        0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Right, up
-        0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Right, down
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Left, down
-        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Left, Up
+        //    Position     |      Color
+        // X     Y     Z   |  R     G     B  | Textur_Pos
+        0.5f,  0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Right, up
+        0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Right, down
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // Left, down
+        -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f  // Left, Up
     };
 
     unsigned int indices[] = {
@@ -85,25 +51,10 @@ bool Engine::Init(const char* title, int width, int height) {
     };
 
     glViewport(0, 0, width, height);
-
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &VERTEX_SHADER_SOURCE, NULL);
-    glCompileShader(vertexShader);
-
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &FRAGMENT_SHADER_SOURCE, NULL);
-    glCompileShader(fragmentShader);
-
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    ourShader = new Shader("content/shaders/shader.vert", "content/shaders/shader.frag");
 
     //VBO VAO EBO
-    glGenVertexArrays(1, &VAO);
+    /*glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
 
@@ -121,6 +72,26 @@ bool Engine::Init(const char* title, int width, int height) {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);*/
+
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
@@ -157,7 +128,7 @@ void Engine::Run() {
             double fps = frames / (currentTime - lastTime);
             std::string titleWithFPS = std::string(g_title) + " FPS: " + std::to_string((int)fps); // 60 fps != 60.000 std::to_string((int)fps)
             glfwSetWindowTitle(window, titleWithFPS.c_str());
-            std::cout << "FPS: " << (int)fps << std::endl; // 60 fps != 60.000 (int)fps
+            //std::cout << "FPS: " << (int)fps << std::endl; // 60 fps != 60.000 (int)fps
             frames = 0;
             lastTime = currentTime;
         }
@@ -181,17 +152,17 @@ void Engine::Run() {
         glm::mat4 projection = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, -1.0f, 1.0f);
 
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(sin(glfwGetTime())*0.3f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(sin(glfwGetTime())*0.5f, cos(glfwGetTime())*0.5f, 0.0f));
         model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 
         glm::mat4 transform = projection * model;
 
-        glUseProgram(shaderProgram);
-        unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        ourShader->use();
+        ourShader->setMat4("transform", transform);
 
         glBindVertexArray(VAO);
+
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
@@ -202,7 +173,7 @@ void Engine::Destroy() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
-    glDeleteProgram(shaderProgram);
+    delete ourShader;
 
     glfwTerminate();
 }

@@ -6,3 +6,10 @@ build/Makefile
 /build/CMakeFiles
 build/cmake_install.cmake
 build/CMakeCache.txt
+/EngineStrucure
+/Engine/build/CMakeFiles
+/Engine/.qtcreator
+Engine/build/cmake_install.cmake
+Engine/build/CMakeCache.txt
+Engine/build/FE
+Engine/build/Makefile
