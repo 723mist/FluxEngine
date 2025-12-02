@@ -3,7 +3,7 @@
 int main() {
     Engine engine;
 
-    engine.Init("Flux Engine", 500, 500);
+    engine.Init("Flux Engine TEST 3D", 500, 500);
 
     TextureManager tm;
     tm.LoadTexture();

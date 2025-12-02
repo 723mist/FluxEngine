@@ -4,7 +4,6 @@
 #include <iostream>
 
 unsigned int TextureManager::LoadTexture(const std::string &filePath) {
-    unsigned int textureID;
     glGenTextures(1, &textureID);
 
     int texWidth, texHeight, nrChannels;

@@ -13,3 +13,4 @@ Engine/build/cmake_install.cmake
 Engine/build/CMakeCache.txt
 Engine/build/FE
 Engine/build/Makefile
+/Engine/libs

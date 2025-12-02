@@ -12,7 +12,7 @@ private:
 public:
     unsigned int LoadTexture(const std::string &filePath = "content/placeholder.jpg");
     void BindTexture(unsigned int textureUnit = 0);
-    void GetTextureID();
+    unsigned int GetTextureID() { return textureID; }
     void whiteTexture();
 };
 
