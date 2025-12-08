@@ -1,16 +1,7 @@
 
-.qtcreator/CMakeLists.txt.user
 /build/Desktop-Debug
-build/VE
-build/Makefile
+/libs
 /build/CMakeFiles
+.qtcreator/CMakeLists.txt.user
 build/cmake_install.cmake
 build/CMakeCache.txt
-/EngineStrucure
-/Engine/build/CMakeFiles
-/Engine/.qtcreator
-Engine/build/cmake_install.cmake
-Engine/build/CMakeCache.txt
-Engine/build/FE
-Engine/build/Makefile
-/Engine/libs

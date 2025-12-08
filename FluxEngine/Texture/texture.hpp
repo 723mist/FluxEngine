@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-class TextureManager {
+class Texture {
 private:
     unsigned int textureID = 0;
 public:
