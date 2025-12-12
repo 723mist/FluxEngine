@@ -37,15 +37,16 @@ void Texture::BindTexture(unsigned int textureUnit) {
 }
 
 void Texture::whiteTexture() {
-    unsigned int whiteTexture;
-    glGenTextures(1, &whiteTexture);
-    glBindTexture(GL_TEXTURE_2D, whiteTexture);
+    if (textureID == 0) {
+        glGenTextures(1, &textureID);
+    }
 
+    glBindTexture(GL_TEXTURE_2D, textureID);
     unsigned char whitePixel[] = { 255, 255, 255, 255 };
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whitePixel);
 
-    if(textureID)
-        glBindTexture(GL_TEXTURE_2D, textureID);
-    else
-        glBindTexture(GL_TEXTURE_2D, whiteTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

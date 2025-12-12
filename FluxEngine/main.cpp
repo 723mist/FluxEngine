@@ -1,10 +1,11 @@
 #include "flux_engine.h"
 
 int main() {
-    Window window;
+    Window Window;
 
-    window.create();
-    window.renderLoop();
+    Window.Create();
+    Window.Render();
+    Window.Close();
 
     return 0;
 }
