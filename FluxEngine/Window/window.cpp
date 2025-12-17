@@ -47,6 +47,10 @@ bool Window::Create(const char* title, int width, int height) {
 
     glViewport(0, 0, width, height);
     ourShader = new Shader("Content/shaders/shader.vert", "Content/shaders/shader.frag");
+    if (ourShader->ID == 0) {
+        std::cout << "Failed to create shader" << std::endl;
+        return false;
+    }
 
     float vertices[] = {
         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
@@ -92,11 +96,6 @@ bool Window::Create(const char* title, int width, int height) {
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
 
-    unsigned int indices[] = {
-        0, 1, 3,
-        1, 2, 3
-    };
-
     texture.whiteTexture();
 
     glGenVertexArrays(1, &VAO);
@@ -109,24 +108,24 @@ bool Window::Create(const char* title, int width, int height) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    //glEnableVertexAttribArray(2);
 
     glEnable(GL_DEPTH_TEST);
 
     GLenum err;
-    while ((err = glGetError() != GL_NO_ERROR)) {
+    while ((err = glGetError()) != GL_NO_ERROR) {
         std::cout << "OpenGL error: " << err << std::endl;
     }
 
+    //object.NewObject();
+
     return true;
 }
-

@@ -129,29 +129,29 @@ FE/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/build
 .PHONY : FE/fast
 
-FluxEngine/Objects/object.o: FluxEngine/Objects/object.cpp.o
-.PHONY : FluxEngine/Objects/object.o
+FluxEngine/Loader/loder.o: FluxEngine/Loader/loder.cpp.o
+.PHONY : FluxEngine/Loader/loder.o
 
 # target to build an object file
-FluxEngine/Objects/object.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Objects/object.cpp.o
-.PHONY : FluxEngine/Objects/object.cpp.o
+FluxEngine/Loader/loder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Loader/loder.cpp.o
+.PHONY : FluxEngine/Loader/loder.cpp.o
 
-FluxEngine/Objects/object.i: FluxEngine/Objects/object.cpp.i
-.PHONY : FluxEngine/Objects/object.i
+FluxEngine/Loader/loder.i: FluxEngine/Loader/loder.cpp.i
+.PHONY : FluxEngine/Loader/loder.i
 
 # target to preprocess a source file
-FluxEngine/Objects/object.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Objects/object.cpp.i
-.PHONY : FluxEngine/Objects/object.cpp.i
+FluxEngine/Loader/loder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Loader/loder.cpp.i
+.PHONY : FluxEngine/Loader/loder.cpp.i
 
-FluxEngine/Objects/object.s: FluxEngine/Objects/object.cpp.s
-.PHONY : FluxEngine/Objects/object.s
+FluxEngine/Loader/loder.s: FluxEngine/Loader/loder.cpp.s
+.PHONY : FluxEngine/Loader/loder.s
 
 # target to generate assembly for a file
-FluxEngine/Objects/object.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Objects/object.cpp.s
-.PHONY : FluxEngine/Objects/object.cpp.s
+FluxEngine/Loader/loder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Loader/loder.cpp.s
+.PHONY : FluxEngine/Loader/loder.cpp.s
 
 FluxEngine/Render/render.o: FluxEngine/Render/render.cpp.o
 .PHONY : FluxEngine/Render/render.o
@@ -176,30 +176,6 @@ FluxEngine/Render/render.s: FluxEngine/Render/render.cpp.s
 FluxEngine/Render/render.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Render/render.cpp.s
 .PHONY : FluxEngine/Render/render.cpp.s
-
-FluxEngine/Scene/scene.o: FluxEngine/Scene/scene.cpp.o
-.PHONY : FluxEngine/Scene/scene.o
-
-# target to build an object file
-FluxEngine/Scene/scene.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Scene/scene.cpp.o
-.PHONY : FluxEngine/Scene/scene.cpp.o
-
-FluxEngine/Scene/scene.i: FluxEngine/Scene/scene.cpp.i
-.PHONY : FluxEngine/Scene/scene.i
-
-# target to preprocess a source file
-FluxEngine/Scene/scene.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Scene/scene.cpp.i
-.PHONY : FluxEngine/Scene/scene.cpp.i
-
-FluxEngine/Scene/scene.s: FluxEngine/Scene/scene.cpp.s
-.PHONY : FluxEngine/Scene/scene.s
-
-# target to generate assembly for a file
-FluxEngine/Scene/scene.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/FE.dir/build.make CMakeFiles/FE.dir/FluxEngine/Scene/scene.cpp.s
-.PHONY : FluxEngine/Scene/scene.cpp.s
 
 FluxEngine/Texture/texture.o: FluxEngine/Texture/texture.cpp.o
 .PHONY : FluxEngine/Texture/texture.o
@@ -282,15 +258,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... FE"
-	@echo "... FluxEngine/Objects/object.o"
-	@echo "... FluxEngine/Objects/object.i"
-	@echo "... FluxEngine/Objects/object.s"
+	@echo "... FluxEngine/Loader/loder.o"
+	@echo "... FluxEngine/Loader/loder.i"
+	@echo "... FluxEngine/Loader/loder.s"
 	@echo "... FluxEngine/Render/render.o"
 	@echo "... FluxEngine/Render/render.i"
 	@echo "... FluxEngine/Render/render.s"
-	@echo "... FluxEngine/Scene/scene.o"
-	@echo "... FluxEngine/Scene/scene.i"
-	@echo "... FluxEngine/Scene/scene.s"
 	@echo "... FluxEngine/Texture/texture.o"
 	@echo "... FluxEngine/Texture/texture.i"
 	@echo "... FluxEngine/Texture/texture.s"

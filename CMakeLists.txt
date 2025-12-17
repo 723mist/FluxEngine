@@ -11,11 +11,10 @@ find_package(glm REQUIRED)
 
 file(GLOB_RECURSE SOURCES
         FluxEngine/*.cpp
-        FluxEngine/Objects/*.cpp
         FluxEngine/Render/*.cpp
-        FluxEngine/Scene/*.cpp
         FluxEngine/Texture/.cpp
         FluxEngine/Window/*.cpp
+        FluxEngine/Loader/*.cpp
 )
 
 file(GLOB_RECURSE HEADERS
@@ -27,6 +26,8 @@ file(GLOB_RECURSE HEADERS
         FluxEngine/Window/*.hpp
         FluxEngine/Texture/*.hpp
         FluxEngine/Objects/*.hpp
+        FluxEngine/Loader/*.hpp
+        FluxEngine/Map/*.hpp
 )
 
 add_executable(FE
