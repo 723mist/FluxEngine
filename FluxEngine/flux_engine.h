@@ -6,5 +6,8 @@
 #include "Shader/shaders.h"
 #include "Texture/texture.hpp"
 #include "Window/window.hpp"
+#include "Vector/vec.h"
+#include "Matrix/matrix.h"
+#include "Math/math.h"
 
 #endif

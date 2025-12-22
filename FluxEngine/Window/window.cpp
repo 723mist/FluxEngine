@@ -33,7 +33,6 @@ bool Window::Create(const char* title, int width, int height) {
     }
 
     glfwMakeContextCurrent(window);
-    //glewExperimental = GL_TRUE;
 
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
@@ -115,17 +114,12 @@ bool Window::Create(const char* title, int width, int height) {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    //glEnableVertexAttribArray(2);
-
     glEnable(GL_DEPTH_TEST);
 
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
         std::cout << "OpenGL error: " << err << std::endl;
     }
-
-    //object.NewObject();
 
     return true;
 }

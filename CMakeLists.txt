@@ -21,6 +21,8 @@ file(GLOB_RECURSE HEADERS
         FluxEngine/*.h
         FluxEngine/Render/*.h
         FluxEngine/Objects/*.h
+        FluxEngine/Vector/*.h
+        FluxEngine/Matrix/*.h
 
         FluxEngine/*.hpp
         FluxEngine/Window/*.hpp

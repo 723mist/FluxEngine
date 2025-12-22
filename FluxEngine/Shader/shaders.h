@@ -9,13 +9,16 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+//#include <glm/glm.hpp>
+//#include <glm/gtc/type_ptr.hpp>
+#include "Matrix/matrix.h"
+#include "Math/math.h"
 
 class Shader
 {
 public:
     unsigned int ID;
+    bool customShader = false;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
     Shader(const char* vertexPath, const char* fragmentPath)
@@ -95,9 +98,9 @@ public:
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
 
-    void setMat4(const std::string &name, const glm::mat4 &mat) const
+    void setMat4(const std::string &name, const mat4 &mat) const
     {
-        glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+        glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, fluxmath::value_ptr(mat));
     }
 
 private:

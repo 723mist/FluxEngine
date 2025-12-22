@@ -4,10 +4,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "../Shader/shaders.h"
-#include "../Texture/texture.hpp"
-#include "../Objects/object.hpp"
-#include "../Map/map.hpp"
+#include "Shader/shaders.h"
+#include "Texture/texture.hpp"
+#include "Objects/object.hpp"
+#include "Map/map.hpp"
+#include "Math/math.h"
 
 class Window {
 private:
@@ -22,7 +23,7 @@ private:
 
     Texture texture;
 
-    glm::mat4 projection;
+    mat4 projection;
 public:
     bool Create(const char* title = "FluxEngine", int width = 800, int height = 600);
     void SetMap(Map* map) { currentMap = map; }
