@@ -10,9 +10,9 @@ class Texture {
 private:
     unsigned int textureID = 0;
 public:
-    unsigned int LoadTexture(const std::string &filePath = "Content/placeholder.jpg");
-    void BindTexture(unsigned int textureUnit = 0);
-    unsigned int GetTextureID() { return textureID; }
+    unsigned int setTexture(const std::string &filePath = "Content/placeholder.jpg");
+    void bindTexture(unsigned int textureUnit = 0);
+    unsigned int getTextureID() { return textureID; }
     void whiteTexture();
 };
 

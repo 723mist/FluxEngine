@@ -10,12 +10,13 @@ struct  vec1 {
     vec1(float x_init) : x(x_init) {}
 
     //Operators
-    vec1 operator+(const vec1& v) const { return vec1(x + v.x); }
-    vec1 operator-(const vec1& v) const { return vec1(x - v.x); }
-    vec1 operator*(float s) const { return vec1(x * s); }
-    vec1 operator/(float s) const { return vec1(x / s); }
-    vec1& operator+=(const vec1& v) { x += v.x; return *this; }
-    vec1& operator-=(const vec1& v) { x -= v.x; return *this; }
+    vec1 operator+(const vec1& v) const { return vec1(x + v.x); } //Operator +
+    vec1 operator-(const vec1& v) const { return vec1(x - v.x); } //Operator -
+    vec1 operator*(float s) const { return vec1(x * s); } //Operator *
+    vec1 operator/(float s) const { return vec1(x / s); } //Operator /
+    vec1& operator+=(const vec1& v) { x += v.x; return *this; } //Operator +=
+    vec1& operator-=(const vec1& v) { x -= v.x; return *this; } //Operator -=
+
     vec1& operator*=(float s) { x *= s; return *this; }
 
     //Arithmetic operators
@@ -33,13 +34,13 @@ struct vec2 {
     vec2(float x, float y) : x(x), y(y) {}
 
     //Operators
-    vec2 operator+(const vec2& v) const { return vec2(x + v.x, y + v.y); }
-    vec2 operator-(const vec2& v) const { return vec2(x - v.x, y - v.y); }
-    vec2 operator*(float s) const { return vec2(x * s, y * s); }
-    vec2 operator/(float s) const { return vec2(x / s, y / s); }
-    vec2& operator+=(const vec2& v) { x += v.x; y += v.y; return *this; }
-    vec2& operator-=(const vec2& v) { x -= v.x; y -= v.y; return *this; }
-    vec2& operator*=(float s) { x *= s; y *= s; return *this; }
+    vec2 operator+(const vec2& v) const { return vec2(x + v.x, y + v.y); } //Operator +
+    vec2 operator-(const vec2& v) const { return vec2(x - v.x, y - v.y); } //Operator -
+    vec2 operator*(float s) const { return vec2(x * s, y * s); } //Operator *
+    vec2 operator/(float s) const { return vec2(x / s, y / s); } //Operator /
+    vec2& operator+=(const vec2& v) { x += v.x; y += v.y; return *this; } //Operator +-=
+    vec2& operator-=(const vec2& v) { x -= v.x; y -= v.y; return *this; } //Operator -=
+    vec2& operator*=(float s) { x *= s; y *= s; return *this; } //Operator *=
 
     //Arithmetic operators
     float length() const { return std::sqrt(x*x + y*y); }
@@ -60,6 +61,7 @@ struct vec3 {
     vec3 operator-(const vec3& v) const { return vec3(x - v.x, y - v.y, z - v.z); } //Operator -
 
     vec3 operator*(float s) const { return vec3(x * s, y * s, z * s); } //Operator *
+    vec3 operator*(const vec3& v) const { return vec3(x * v.x, y * v.y, z * v.z); } //Operator * vector
     vec3 operator/(float s) const { return vec3(x / s, y / s, z / s); } //Operator /
 
     vec3& operator+=(const vec3& v) { x += v.x; y += v.y; z += v.z; return *this; } //Operator +=
@@ -74,23 +76,24 @@ struct vec3 {
     static vec3 cross(const vec3& a, const vec3& b) { return vec3(a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x); }
 };
 
-
-////?????????????????????///
-
-
 struct vec4 {
     union {
         struct { float x, y, z, w; };
         float data[4];
     };
+
+    //Operators
     vec4() : x(0), y(0), z(0), w(0) {}
     vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
     vec4(float xx) : x(xx), y(0), z(0), w(0) {}
     vec4(float xx, float yy) : x(xx), y(yy), z(0), w(0) {}
-    vec4 operator+(const vec4& v) const { return vec4(x + v.x, y + v.y, z + v.z, w + v.w); }
-    vec4 operator-(const vec4& v) const { return vec4(x - v.x, y - v.y, z - v.z, w - v.w); }
-    vec4 operator*(float s) const { return vec4(x * s, y * s, z * s, w * s); }
-    vec4 operator/(float s) const { return vec4(x / s, y / s, z / s, w / s); }
+
+    vec4 operator+(const vec4& v) const { return vec4(x + v.x, y + v.y, z + v.z, w + v.w); } //Operator +
+    vec4 operator-(const vec4& v) const { return vec4(x - v.x, y - v.y, z - v.z, w - v.w); } //Operator +
+    vec4 operator*(float s) const { return vec4(x * s, y * s, z * s, w * s); } //Operator *
+    vec4 operator/(float s) const { return vec4(x / s, y / s, z / s, w / s); } //Operator /
+
+    //Arithmetic operators
     float& operator[](int i) { return data[i]; }
     const float& operator[](int i) const { return data[i]; }
 };

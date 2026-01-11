@@ -3,7 +3,7 @@
 #include "../libs/stb/stb_image.h"
 #include <iostream>
 
-unsigned int Texture::LoadTexture(const std::string &filePath) {
+unsigned int Texture::setTexture(const std::string &filePath) {
     glGenTextures(1, &textureID);
 
     int texWidth, texHeight, nrChannels;
@@ -31,7 +31,7 @@ unsigned int Texture::LoadTexture(const std::string &filePath) {
     return textureID;
 }
 
-void Texture::BindTexture(unsigned int textureUnit) {
+void Texture::bindTexture(unsigned int textureUnit) {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, textureID);
 }

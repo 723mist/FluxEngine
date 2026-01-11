@@ -19,7 +19,7 @@ public:
 
     Object(const std::string& name = "Object") : name(name), position(0, 0, 0), rotation(0, 0, 0), scale(1, 1, 1) {}
 
-    mat4 GetModelMatrix() const {
+    mat4 getModelMatrix() const {
         mat4 model;
         model = fluxmath::translate(model, position);
         model = fluxmath::rotate(model, fluxmath::radians(rotation.x), vec3(1, 0, 0));
@@ -29,18 +29,18 @@ public:
         return model;
     }
 
-    void LoadTexture(const std::string& filePath) {
+    void setTexture(const std::string& filePath) {
         texture = std::make_shared<Texture>();
-        texture->LoadTexture(filePath);
+        texture->setTexture(filePath);
     }
 
-    void SetTexture(std::shared_ptr<Texture> tex) {
+    void setTextureFrom(std::shared_ptr<Texture> tex) {
         texture = tex;
     }
 
-    void BindTexture(unsigned int textureUnit = 0) {
+    void bindTexture(unsigned int textureUnit = 0) {
         if (texture) {
-            texture->BindTexture(textureUnit);
+            texture->bindTexture(textureUnit);
         }
     }
 };

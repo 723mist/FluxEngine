@@ -9,5 +9,7 @@
 #include "Vector/vec.h"
 #include "Matrix/matrix.h"
 #include "Math/math.h"
+#include "Light/light.h"
+#include "Camera/camera.h"
 
 #endif

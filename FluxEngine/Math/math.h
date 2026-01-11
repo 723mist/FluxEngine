@@ -68,7 +68,7 @@ inline vec3 normalize(const vec3& v) { return v.normalized(); }
 inline vec3 cross(const vec3& a, const vec3& b) { return vec3::cross(a, b); }
 
 inline const float* value_ptr(const mat4& m) {
-    thread_local float data[16];
+    static float data[16];
     for(int i = 0; i < 4; i++) {
         data[i*4 + 0] = m[i].x;
         data[i*4 + 1] = m[i].y;

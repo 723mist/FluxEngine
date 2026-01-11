@@ -14,7 +14,6 @@ file(GLOB_RECURSE SOURCES
         FluxEngine/Render/*.cpp
         FluxEngine/Texture/.cpp
         FluxEngine/Window/*.cpp
-        FluxEngine/Loader/*.cpp
 )
 
 file(GLOB_RECURSE HEADERS
@@ -23,12 +22,13 @@ file(GLOB_RECURSE HEADERS
         FluxEngine/Objects/*.h
         FluxEngine/Vector/*.h
         FluxEngine/Matrix/*.h
+        FluxEngine/Light/*.h
+        FluxEngine/Camera/*.h
 
         FluxEngine/*.hpp
         FluxEngine/Window/*.hpp
         FluxEngine/Texture/*.hpp
         FluxEngine/Objects/*.hpp
-        FluxEngine/Loader/*.hpp
         FluxEngine/Map/*.hpp
 )
 
